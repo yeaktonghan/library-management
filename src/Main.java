@@ -23,7 +23,7 @@ public class Main {
                     book[bookCount] = new Book();
                     System.out.println("========================== Add Book Info ==========================");
                     // Book auto-iterate
-                    System.out.println("=> Book ID : " + bookCount+1);
+                    System.out.println("=> Book ID : " + Integer.toString(bookCount+1));
                     int bookID = bookCount+1;
                     book[bookCount].setId(bookID);
                     System.out.print("=> Enter Book's Name : ");
