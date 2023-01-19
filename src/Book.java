@@ -5,6 +5,10 @@ public class Book {
 
     private boolean available;
 
+    public Book(){
+        this.id = 0;
+    }
+
     int getId(){
         return id;
     }

@@ -24,4 +24,17 @@ public class Validator {
         }
         return isString;
     }
+
+    public static boolean validateChoice(String text){
+        boolean isString = false;
+        int index = 0;
+
+        while(index < text.length()){
+            if(!(text.charAt(index) >= '0' && text.charAt(index) <= '1')){
+                isString = true;
+            }
+            index++;
+        }
+        return isString;
+    }
 }
