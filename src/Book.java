@@ -1,6 +1,6 @@
 public class Book {
     private int id;
-    private String name;
+    private String title;
     private String publishYear;
 
     private boolean available;
@@ -8,8 +8,8 @@ public class Book {
     int getId(){
         return id;
     }
-    String getName(){
-        return name;
+    String getTitle(){
+        return title;
     }
     String getPublishYear(){
         return publishYear;
@@ -18,8 +18,8 @@ public class Book {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setPublishYear(String publishYear) {

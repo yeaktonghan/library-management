@@ -7,6 +7,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Book book[] = new Book[30];
 
+        // CURRENT BOOK IN THE LIBRARY
         int bookCount = 0;
         do{
             System.out.println("========================== " + Library.getName()+" LIBRARY " + Library.getAddress()+ " ==========================");
@@ -16,12 +17,13 @@ public class Main {
             System.out.println("4. Borrow Book");
             System.out.println("5. Return Book");
             System.out.println("6. Exit");
+            System.out.print("=> ");
             String inputOption = scanner.nextLine();
             while(Validator.validateMainMenu(inputOption)){
                 System.out.println("Please Enter from 1-6");
+                inputOption = scanner.nextLine();
             }
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option = Integer.parseInt(inputOption);
             switch (option){
                 case 1:
                     book[bookCount] = new Book();
@@ -32,7 +34,7 @@ public class Main {
                     book[bookCount].setId(bookID);
                     System.out.print("=> Enter Book's Name : ");
                     String bookName = scanner.nextLine();
-                    book[bookCount].setName(bookName);
+                    book[bookCount].setTitle(bookName);
                     System.out.print("=> Enter Book Author Name : ");
                     String autherName = scanner.nextLine();
                     book[bookCount].author.setName(autherName);
@@ -47,7 +49,7 @@ public class Main {
                     bookCount++;
                     System.out.println("Book is added successfully\n\n\n");
                     break;
-                case 2:
+                case 4:
                     System.out.println("========================== Borrow Book Info ==========================");
                     System.out.println("Enter Book ID to Borrow : ");
                     String inputID = scanner.nextLine();
@@ -58,12 +60,29 @@ public class Main {
                     int id = Integer.parseInt(inputID);
 
                     boolean hasBook = false;
-
                     for(int i = 0; i < book.length; i++){
-                        if(!(book[i] == null)){
+                        // 0 Mean object not created yet
+                        if(!(book[i].getId() == 0)){
                             continue;
                         }else{
                             hasBook = true;
+                        }
+                    }
+
+                    if(hasBook=false){
+                        System.out.println("No book in the library!!");
+                    }else{
+                        for(int j = 0; j < book.length; j++){
+                            Integer bigID = new Integer(id);
+                            if(bigID.equals(book[j].getId())){
+                                System.out.println("Book ID : " + book[j].getId());
+                                System.out.println("Book Title : " + book[j].getTitle());
+                                System.out.println("Book Author : " + book[j].author.getName());
+                                System.out.println("Published Year : " + book[j].getPublishYear());
+                            }
+                            else{
+                                System.out.println("There's no such book in the library");
+                            }
                         }
                     }
 
