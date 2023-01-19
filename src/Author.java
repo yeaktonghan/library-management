@@ -1,3 +1,5 @@
+// THIS CLASS CONTROLS AUTHOR INFORMATION WHICH IS ALSO A COMPOSITION IN BOOK CLASS.
+
 public class Author {
     private String name;
     private String activeYear;

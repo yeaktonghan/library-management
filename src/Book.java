@@ -29,7 +29,7 @@ public class Book {
     public void setPublishYear(String publishYear) {
         this.publishYear = publishYear;
     }
-    Author author = new Author();
+    Author author = new Author(); // CAN CHAIN-CALL TO AUTHOR
 
     public void setAuthorName(String authorName){ // this is just an example. You can just call book.author.setName();
         author.setName(authorName);
@@ -44,5 +44,13 @@ public class Book {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+    public String getAvailability(){ // THIS METHOD RETURN AVAILABILITY AS A STRING INSTEAD OF BOOLEAN
+        if(available == true){
+            return "Available";
+        }
+        else {
+            return "Unavailable";
+        }
     }
 }
