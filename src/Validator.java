@@ -1,4 +1,4 @@
-public class TypeValidator {
+public class Validator {
     public static boolean validateForInt(String text){
         boolean isString = false;
         int index = 0;

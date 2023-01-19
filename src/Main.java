@@ -16,6 +16,10 @@ public class Main {
             System.out.println("4. Borrow Book");
             System.out.println("5. Return Book");
             System.out.println("6. Exit");
+            String inputOption = scanner.nextLine();
+            while(Validator.validateMainMenu(inputOption)){
+                System.out.println("Please Enter from 1-6");
+            }
             int option = scanner.nextInt();
             scanner.nextLine();
             switch (option){
@@ -35,7 +39,7 @@ public class Main {
                     System.out.print("=> Author Year Active : ");
                     String yearActive = scanner.nextLine();
                     book[bookCount].author.setActiveYear(yearActive);
-                    System.out.print("Enter Publish Year : ");
+                    System.out.print("=> Enter Publish Year : ");
                     String publishYear = scanner.nextLine();
                     book[bookCount].setPublishYear(publishYear);
                     // Set book availability = true on created
@@ -43,6 +47,25 @@ public class Main {
                     bookCount++;
                     System.out.println("Book is added successfully\n\n\n");
                     break;
+                case 2:
+                    System.out.println("========================== Borrow Book Info ==========================");
+                    System.out.println("Enter Book ID to Borrow : ");
+                    String inputID = scanner.nextLine();
+                    while(Validator.validateForInt(inputID)){
+                        System.out.println("Please enter positive whole number : ");
+                        inputID = scanner.nextLine();
+                    }
+                    int id = Integer.parseInt(inputID);
+
+                    boolean hasBook = false;
+
+                    for(int i = 0; i < book.length; i++){
+                        if(!(book[i] == null)){
+                            continue;
+                        }else{
+                            hasBook = true;
+                        }
+                    }
 
                 case 6:
                     exit();
