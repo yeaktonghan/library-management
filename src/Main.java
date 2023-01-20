@@ -1,3 +1,9 @@
+import org.nocrala.tools.texttablefmt.Table;
+import org.nocrala.tools.texttablefmt.BorderStyle;
+import org.nocrala.tools.texttablefmt.ShownBorders;
+import org.nocrala.tools.texttablefmt.CellStyle;
+
+import javax.swing.*;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -13,6 +19,11 @@ public class Main {
 
     // JUST IN CASE WE HAVE DELETE-BOOK OPTION
     public static int bookCount = 0;
+
+
+    // THIS WILL SAVE ROW STATE EVEN WHEN EXIT OPTION SHOW
+    static int row = 5;
+    static int defaultRow = 5;
 
     public static void main(String[] args) {
         setUpPage();
@@ -126,9 +137,7 @@ public class Main {
         book[bookIteration].setAvailable(true);
         bookIteration++; // INCREMENT bookIteration FOR NEXT ADD-BOOK
         bookCount++; // AS MENTION ABOVE, THIS HAS NO USEFUL FUNCTION YET BESIDE KEEPING TRACK WHETHER WE HAVE A BOOK OR NOT WHICH CAN EASILY BE ANSWERED JUST BY YES AND NO
-        System.out.println("Book is added successfully\n\n\n");
-        System.out.println("Press any key to continue...");
-        scanner.nextLine();
+        System.out.println("Book is added successfully");
     }
 
 
@@ -154,15 +163,14 @@ public class Main {
             int bookIdFound = 0;
             for (int j = 0; j < bookIteration; j++) {
                 if (id == book[j].getId()) { // if found book
-                    if(book[j].isAvailable()) { // if book is available for borrow
+                    if (book[j].isAvailable()) { // if book is available for borrow
                         System.out.println("Book ID : " + book[j].getId());
                         System.out.println("Book Title : " + book[j].getTitle());
                         System.out.println("Book Author : " + book[j].author.getName());
                         System.out.println("Published Year : " + book[j].getPublishYear());
                         hasBook = true;
                         bookIdFound = j; // SAVE THE INDEX OF ID WHICH IT WAS FOUND TO USE LATER
-                    }
-                    else{
+                    } else {
                         System.out.println("This Book is not available!!!");
                         System.out.println("Press any key to choose again...");
                         scanner.nextLine();
@@ -177,7 +185,7 @@ public class Main {
                 System.out.println("Press any key to continue...");
                 scanner.nextLine();
             } else //ELSE DISPLAY OPTION TO CONFIRM.
-                {
+            {
                 System.out.println("Would you like to borrow this book? Press 0 to cancel and 1 to confirm : ");
                 String inputChoice = scanner.nextLine();
                 while (Validator.validateChoice(inputChoice)) {
@@ -186,7 +194,7 @@ public class Main {
                 }
                 int choice = Integer.parseInt(inputChoice);
                 if (choice == 0) // CANCEL
-                    {
+                {
                     System.out.println("You chose to cancel!!");
                     scanner.nextLine();
                 } else // BORROW BOOK SET AVAILABLE TO FALSE
@@ -219,15 +227,14 @@ public class Main {
             int bookIdFound = 0;
             for (int j = 0; j < bookIteration; j++) {
                 if (id == book[j].getId()) {
-                    if(!book[j].isAvailable()) {// If book is borrowed
+                    if (!book[j].isAvailable()) {// If book is borrowed
                         System.out.println("Book ID : " + book[j].getId());
                         System.out.println("Book Title : " + book[j].getTitle());
                         System.out.println("Book Author : " + book[j].author.getName());
                         System.out.println("Published Year : " + book[j].getPublishYear());
                         hasBook = true;
                         bookIdFound = j;
-                    }
-                    else{
+                    } else {
                         System.out.println("No one is borrowing this book!!!");
                         System.out.println("Press any key to continue...");
                         scanner.nextLine();
@@ -256,52 +263,146 @@ public class Main {
         }
     }
 
-
     // OPTION 3: SHOW AVAILABLE BOOK
     public static void showAvailableBook() {
+        int startPosition = 0;
+        boolean continueShow = true;
+        int pageCount = 1;
         Scanner scanner = new Scanner(System.in);
-        if(bookCount != 0) {
-            System.out.println("========================== AVAILABLE BOOKS INFO ==========================");
-            System.out.println("||  ID  |      TITLE       |          AUTHOR         |          PUBLISH DATE        |      STATUS      ||");
-            for (int i = 0; i < bookIteration; i++) {
-                if(book[i].isAvailable()) { // CHECK WHICH BOOK IS AVAILABLE AND ONLY DISPLAY THAT
-                    System.out.print("||  " + book[i].getId() + "  |" + "      " + book[i].getTitle() + "      |" + "          " + book[i].author.getName() + " (" + book[i].author.getActiveYear() + ")" + "          |" + "          " + book[i].getPublishYear() + "          |" + "      " + book[i].getAvailability() + "      ||");
-//                    System.out.print("      " + book[i].getTitle() + "      |");
-//                    System.out.print("          " + book[i].author.getName() + " (" + book[i].author.getActiveYear() + ")" + "          |");
-//                    System.out.print("          " + book[i].getPublishYear() + "          |");
-//                    System.out.print("      " + book[i].getAvailability() + "      ||");
-                    System.out.println();
+
+        do {
+            CellStyle numberStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+            Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+            table.setColumnWidth(0, 3, 5);
+            table.setColumnWidth(1, 20, 26);
+            table.setColumnWidth(2, 30, 26);
+            table.setColumnWidth(3, 20, 26);
+            table.setColumnWidth(4, 10, 26);
+            table.addCell("AVAILABLE BOOKS INFO ", numberStyle, (5));
+            table.addCell(" ID", numberStyle);
+            table.addCell("TITLE", numberStyle);
+            table.addCell("AUTHOR", numberStyle);
+            table.addCell("PUBLISH DATE", numberStyle);
+            table.addCell("STATUS", numberStyle);
+                if(bookCount!=0) {
+                    for (int i = startPosition; i < row; i++) { // PRINT ROWS
+                        if (i < bookCount) {
+                            if (book[i].isAvailable()) {// CHECK WHICH BOOK IS AVAILABLE AND ONLY DISPLAY THAT
+                                table.addCell(String.valueOf(book[i].getId()), numberStyle);
+                                table.addCell(book[i].getTitle(), numberStyle);
+                                table.addCell(book[i].author.getName() + " (" + book[i].author.getActiveYear() + " )", numberStyle);
+                                table.addCell(book[i].getPublishYear(), numberStyle);
+                                table.addCell(book[i].getAvailability(), numberStyle);
+                            }
+                        } else {
+                            table.addCell("No Record to Show here", numberStyle, (5));
+                            break;
+                        }
+                    }
+                    System.out.println(table.render());
+                }else{
+                    table.addCell("No Record to Show here", numberStyle, (5));
+                    System.out.println(table.render());
                 }
-            }
-        }else{
-            System.out.println("No book to show");
-            System.out.println("Press any key to continue...");
-            scanner.nextLine();
-        }
+                System.out.println("1) First Page     2) Next Page     3) Previous     4) Last Page     5) Change display row     6) Go to Main Menu");
+                System.out.println("Choose an option : ");
+                String inputOption = scanner.nextLine();
+                while(Validator.validateMainMenu(inputOption)){
+                    System.out.println("Please input 1-6 : ");
+                    inputOption = scanner.nextLine();
+                }
+                int option = Integer.parseInt(inputOption);
+                int totalPage = 0;
+                if(bookCount % defaultRow == 0){
+                    totalPage = bookCount / defaultRow;
+                }
+                else {
+                    totalPage = (int)(bookCount/defaultRow)-1;
+                }
+                switch (option){
+                    case 1: // First page
+                        startPosition = 0;
+                        row = defaultRow;
+                        showAvailableBook();
+                        break;
+                    case 2: // Next page
+                        startPosition = pageCount*defaultRow;
+                        pageCount++;
+                        System.out.println(startPosition);
+                        row = pageCount*defaultRow;
+                        break;
+                    case 3: // Previous page
+                        if(pageCount == 1){
+                            System.out.println("You are on first page.");
+                            break;
+                        }else {
+//                            System.out.println("It's in prev page");
+                            pageCount--;
+                            System.out.println("Page count " + pageCount);
+                            startPosition = (pageCount-1)*defaultRow;
+//                            System.out.println("Start Position " + startPosition);
+                            row = pageCount*defaultRow;
+//                            System.out.println("Final Row " + row);
+                            break;
+                        }
+                    case 4: // Last page
+                        if(pageCount*defaultRow >= defaultRow){
+                            System.out.println("There's no page 2");
+                        }else {
+                            int placeHolder = (bookCount % defaultRow) - bookCount;
+                            System.out.println("Place Holder: " + placeHolder);
+                            startPosition = placeHolder;
+                            row = startPosition + row; // Whatever number here is not important, as long as it is larger than start position + how many display row you currently set
+                            break;
+                        }
+                    case 5: // Change display row
+                        System.out.println("Enter How many row you want to display : ");
+                        String inputRow = scanner.nextLine();
+                        while(Validator.validateForInt(inputRow)){
+                            System.out.println("Please input positive number : ");
+                            inputRow = scanner.nextLine();
+                        }
+                        row = Integer.parseInt(inputRow);
+                        defaultRow = Integer.parseInt(inputRow);
+                        showAvailableBook();
+                        break;
+                    case 6: // Main menu
+                        continueShow = false;
+                        break;
+                }
+        }while(continueShow);
     }
 
 
     // OPTION 2: SHOW ALL BOOK
     public static void showAllBook() {
         Scanner scanner = new Scanner(System.in);
-        if(bookCount != 0) {
-            System.out.println("========================== ALL BOOKS INFO ==========================");
-            System.out.println("||  ID  |      TITLE       |          AUTHOR          |          PUBLISH DATE        |      STATUS      ||");
+        CellStyle numberStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+        Table t = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        if (bookCount != 0) {
+            t.setColumnWidth(0, 3, 5);
+            t.setColumnWidth(1, 20, 26);
+            t.setColumnWidth(2, 30, 26);
+            t.setColumnWidth(3, 20, 26);
+            t.setColumnWidth(4, 10, 26);
+            t.addCell("AVAILABLE BOOKS INFO ", numberStyle, (5));
+            t.addCell(" ID", numberStyle);
+            t.addCell("TITLE", numberStyle);
+            t.addCell("AUTHOR", numberStyle);
+            t.addCell("PUBLISH DATE", numberStyle);
+            t.addCell("STATUS", numberStyle);
             for (int i = 0; i < bookIteration; i++) {
-                System.out.print("||  " + book[i].getId() + "  |" + "      " + book[i].getTitle() + "      |" + "          " + book[i].author.getName() + " (" + book[i].author.getActiveYear() + ")" + "          |" + "          " + book[i].getPublishYear() + "          |" + "      " + book[i].getAvailability() + "      ||");
-//                System.out.print("||  " + book[i].getId() + "  |");
-//                System.out.print("      " + book[i].getTitle() + "      |");
-//                System.out.print("          " + book[i].author.getName() + " (" + book[i].author.getActiveYear() + ")" + "          |");
-//                System.out.print("          " + book[i].getPublishYear()+ "          |");
-//                System.out.print("      " + book[i].getAvailability()+ "      ||");
+                t.addCell(String.valueOf(book[i].getId()), numberStyle);
+                t.addCell(book[i].getTitle(), numberStyle);
+                t.addCell(book[i].author.getName() + " (" + book[i].author.getActiveYear() + " )", numberStyle);
+                t.addCell(book[i].getPublishYear(), numberStyle);
+                t.addCell(book[i].getAvailability(), numberStyle);
                 System.out.println();
             }
-        }else{
+        } else {
             System.out.println("No book to show");
             System.out.println("Press any key to continue...");
             scanner.nextLine();
         }
-
     }
-
 }
