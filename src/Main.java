@@ -96,12 +96,13 @@ public class Main {
 
     // OPTION 6: EXIT
     public static void exit() {
-
+        System.out.println("(.づ◡﹏◡)づ. ( T⌓T) NO MORE PAGINATION PLEASE (╥_╥) ( ɵ̥̥ ﹏ ɵ̥̥)");
+        System.out.println("( ಥ _ಥ) Good Bye! ( ಥ _ಥ)");
         // Loading animation
         char[] animationChars = new char[]{'|', '/', '-', '\\'};
         for (int i = 0; i <= 5; i++) {
             // JUST ANIMATION, NOT IMPORTANT
-            System.out.println("(^-^) Good Bye! (^-^)");
+
             System.out.print("Exiting Program: " + animationChars[i % 4] + "\r");
 
             try {
